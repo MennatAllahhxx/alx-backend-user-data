@@ -9,6 +9,7 @@ import logging
 
 PII_FIELDS = ('name', 'email', 'phone', 'ssn', 'password')
 
+
 def filter_datum(fields: tuple, redaction: str,
                  message: str, separator: str) -> str:
     """filter_datum fun"""
@@ -17,6 +18,7 @@ def filter_datum(fields: tuple, redaction: str,
                          rf'\1={redaction}{separator}',
                          message, flags=re.DOTALL)
     return message
+
 
 def get_logger() -> logging.Logger:
     """get_logger fun"""
