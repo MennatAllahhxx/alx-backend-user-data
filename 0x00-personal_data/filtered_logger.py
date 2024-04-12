@@ -48,6 +48,23 @@ def get_db() -> mysql.connector.connection.MySQLConnection:
     return mydb
 
 
+def main():
+    mydb = get_db()
+    cursor = mydb.cursor()
+    cursor.execute('SELECT * FROM users;')
+    users = cursor.fetchall()
+    logger = get_logger()
+    for user in users:
+        message = f'{PII_FIELDS[0]}={user[0]}; ' + \
+                  f'{PII_FIELDS[1]}={user[1]}; ' + \
+                  f'{PII_FIELDS[2]}={user[2]}: ' + \
+                  f'{PII_FIELDS[3]}={user[3]}; ' + \
+                  f'{PII_FIELDS[4]}={user[4]}'
+        logger.info(message)
+    cursor.close()
+    mydb.close()
+
+
 class RedactingFormatter(logging.Formatter):
     """ Redacting Formatter class
         """
