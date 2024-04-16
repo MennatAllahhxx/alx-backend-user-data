@@ -3,6 +3,7 @@
 filtered_logger module
 """
 
+from typing import List
 import re
 import os
 import logging
@@ -11,7 +12,7 @@ import mysql.connector
 PII_FIELDS = ('name', 'email', 'phone', 'ssn', 'password')
 
 
-def filter_datum(fields: tuple, redaction: str,
+def filter_datum(fields: List[str], redaction: str,
                  message: str, separator: str) -> str:
     """filter_datum fun"""
     for field in fields:
@@ -74,7 +75,7 @@ class RedactingFormatter(logging.Formatter):
     FORMAT = "[HOLBERTON] %(name)s %(levelname)s %(asctime)-15s: %(message)s"
     SEPARATOR = ";"
 
-    def __init__(self, fields: tuple):
+    def __init__(self, fields: List[str]):
         super(RedactingFormatter, self).__init__(self.FORMAT)
         self.fields = fields
 
