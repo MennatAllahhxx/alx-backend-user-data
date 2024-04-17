@@ -2,6 +2,8 @@
 """ Module of Basic Authorization
 """
 from api.v1.auth.auth import Auth
+from typing import TypeVar, List
+from models.user import User
 import base64
 
 
@@ -61,3 +63,25 @@ class BasicAuth(Auth):
             return (None, None)
         info = decoded_base64_authorization_header.split(":")
         return (info[0], info[1])
+
+    def user_object_from_credentials(self,
+                                     user_email: str,
+                                     user_pwd: str) -> TypeVar('User'):
+        """AI is creating summary for user_object_from_credentials
+
+        Args:
+            self ([type]): [description]
+        """
+        if user_email is None or\
+           not isinstance(user_email, str) or\
+           user_pwd is None or\
+           not isinstance(user_pwd, str):
+            return None
+
+        user = User.search({"email": user_email})
+        if not user:
+            return None
+        if user[0].is_valid_password(user_pwd):
+            return user[0]
+        else:
+            return None
