@@ -3,7 +3,6 @@
 """
 import os
 from typing import List, TypeVar
-from flask import request
 
 
 class Auth:
@@ -38,10 +37,10 @@ class Auth:
         """
         if request is None:
             return None
-        if "Authorization" not in request.headers:
-            return None
-        else:
+        if "Authorization" in request.headers:
             return request.headers["Authorization"]
+        else:
+            return None
 
     def current_user(self, request=None) -> TypeVar('User'):
         """AI is creating summary for current_user
