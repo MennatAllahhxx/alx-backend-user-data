@@ -22,8 +22,12 @@ class Auth:
            excluded_paths is None or\
            excluded_paths == []:
             return True
-        if os.path.join(path, '') in excluded_paths:
-            return False
+        path = os.path.join(path, '')
+        for pathh in excluded_paths:
+            if pathh.endswith('*') and\
+               path.startswith(pathh[:-1]) or\
+               pathh == path:
+                return False
         return True
 
     def authorization_header(self, request=None) -> str:
