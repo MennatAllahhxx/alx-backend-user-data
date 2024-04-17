@@ -31,12 +31,17 @@ class Auth:
         """AI is creating summary for authorization_header
 
         Args:
-            request ([type], optional): [description]. Defaults to None.
+            request ([type], optional): request. Defaults to None.
 
         Returns:
-            str: [description]
+            str: the value of the header request Authorization
         """
-        return None
+        if request is None:
+            return None
+        if request.headers["Authorization"] is None:
+            return None
+        else:
+            return request.headers["Authorization"]
 
     def current_user(self, request=None) -> TypeVar('User'):
         """AI is creating summary for current_user
