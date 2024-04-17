@@ -27,6 +27,14 @@ class BasicAuth(Auth):
     def decode_base64_authorization_header(self,
                                            base64_authorization_header:
                                            str) -> str:
+        """AI is creating summary for decode_base64_authorization_header
+
+        Args:
+            base64_authorization_header (str): encoded base64 token
+
+        Returns:
+            str: decoded value as UTF8 string
+        """
         if base64_authorization_header is None or \
            not isinstance(base64_authorization_header, str):
             return None
