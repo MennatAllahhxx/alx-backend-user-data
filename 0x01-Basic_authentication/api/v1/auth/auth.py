@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """ Module of Authorization
 """
-from flask import request
+import os
 from typing import List, TypeVar
+from flask import request
 
 
 class Auth:
@@ -12,13 +13,19 @@ class Auth:
         """AI is creating summary for require_auth
 
         Args:
-            path (str): [description]
-            excluded_paths (List[str]): [description]
+            path (str): path to be checked
+            excluded_paths (List[str]): paths that dont require auth
 
         Returns:
-            bool: [description]
+            bool: False if path is in excluded_paths
         """
-        return False
+        if path is None or\
+           excluded_paths is None or\
+           excluded_paths == []:
+            return True
+        if os.path.join(path, '') in excluded_paths:
+            return False
+        return True
 
     def authorization_header(self, request=None) -> str:
         """AI is creating summary for authorization_header
@@ -33,5 +40,8 @@ class Auth:
 
     def current_user(self, request=None) -> TypeVar('User'):
         """AI is creating summary for current_user
+
+        Returns:
+            [type]: [description]
         """
         return None
