@@ -58,7 +58,7 @@ class Auth:
         """AI is creating summary for session_cookie
 
         Args:
-            request ([type], optional): [description]. Defaults to None.
+            request ([type], optional): request to handle. Defaults to None.
         """
         if request is None:
             return None
