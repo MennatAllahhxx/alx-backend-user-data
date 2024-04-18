@@ -53,3 +53,14 @@ class Auth:
             [type]: [description]
         """
         return None
+
+    def session_cookie(self, request=None):
+        """AI is creating summary for session_cookie
+
+        Args:
+            request ([type], optional): [description]. Defaults to None.
+        """
+        if request is None:
+            return None
+        _my_session_id = os.getenv('SESSION_NAME')
+        return request.cookies.get(_my_session_id)
