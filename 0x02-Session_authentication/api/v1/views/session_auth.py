@@ -8,7 +8,7 @@ from models.user import User
 
 
 @app_views.route('/auth_session/login', methods=['POST'], strict_slashes=False)
-def login():
+def login() -> str:
     """ POST /auth_session/login
     Return:
       - User object JSON represented
@@ -27,7 +27,7 @@ def login():
         return jsonify({"error": "no user found for this email"}), 404
 
     if not user[0].is_valid_password(pswd):
-        return jsonify({"error": "wrong password"}), 404
+        return jsonify({"error": "wrong password"}), 401
 
     from api.v1.app import auth
 
