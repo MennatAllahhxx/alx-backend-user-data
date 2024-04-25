@@ -58,7 +58,7 @@ class DB:
         user = self._session.query(User).filter_by(**kwargs).one()
         return user
 
-    def update_user(self, user_id: int, **kwargs):
+    def update_user(self, user_id: int, **kwargs) -> None:
         """AI is creating summary for update_user
 
         Args:
@@ -71,4 +71,4 @@ class DB:
             else:
                 raise ValueError
         self._session.commit()
-        return
+        return None
