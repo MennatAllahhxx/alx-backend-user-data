@@ -57,3 +57,18 @@ class DB:
             raise InvalidRequestError
         user = self._session.query(User).filter_by(**kwargs).one()
         return user
+
+    def update_user(self, user_id: int, **kwargs):
+        """AI is creating summary for update_user
+
+        Args:
+            user_id (int): user id
+        """
+        user = self._session.query(User).filter_by(id=user_id).one()
+        for kw, val in kwargs.items():
+            if hasattr(user, kw):
+                setattr(user, kw, val)
+            else:
+                raise ValueError
+        self._session.commit()
+        return
