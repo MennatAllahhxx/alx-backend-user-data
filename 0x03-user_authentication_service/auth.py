@@ -24,7 +24,7 @@ def _hash_password(password: str) -> bytes:
     return bcrypt.hashpw(byte, salt)
 
 
-def _generate_uuid():
+def _generate_uuid() -> str:
 
     """AI is creating summary for _generate_uuid
 
