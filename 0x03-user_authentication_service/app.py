@@ -50,7 +50,7 @@ def login():
     session_id = auth.create_session(email)
     if not session_id or not auth.valid_login(email, password):
         abort(401)
-    response = jsonify({"email": email, "message": "user created"})
+    response = jsonify({"email": email, "message": "logged in"})
     response.set_cookie("session_id", session_id)
     return response, 200
 
