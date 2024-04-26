@@ -35,7 +35,7 @@ def register_user():
     return jsonify({"email": email, "message": "user created"})
 
 
-@app.route("/sessions", methods=["POST"])
+@app.route('/sessions', methods=['POST'])
 def login():
     """ POST /sessions
     Return:
@@ -54,7 +54,7 @@ def login():
     abort(401)
 
 
-@app.route("/sessions", methods=["DELETE"])
+@app.route('/sessions', methods=['DELETE'])
 def logout():
     """ DELETE /sessions
     Return:
