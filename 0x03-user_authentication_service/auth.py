@@ -46,3 +46,19 @@ class Auth:
         except NoResultFound:
             password = _hash_password(password)
             return self._db.add_user(email, password)
+
+    def valid_login(self, email: str, password: str) -> bool:
+        """AI is creating summary for valid_login
+
+        Args:
+            email (str): user email
+            password (str): user password
+
+        Returns:
+            bool: true if valid password
+        """
+        try:
+            user = self._db.find_user_by(email=email)
+        except NoResultFound:
+            return False
+        return bcrypt.checkpw(password.encode('utf-8'), user.hashed_password)
