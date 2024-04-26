@@ -3,13 +3,12 @@
 """
 from flask import Flask, jsonify, request, abort, make_response, redirect
 from auth import Auth
-import email
 
 app = Flask(__name__)
 auth = Auth()
 
 
-@app.route('/', methods=['GET'], strict_slashes=False)
+@app.route('/')
 def index():
     """ GET /
     Return:
@@ -18,8 +17,8 @@ def index():
     return jsonify({"message": "Bienvenue"})
 
 
-@app.route('/users', methods=['POST'], strict_slashes=False)
-def register_user():
+@app.route('/users', methods=['POST'])
+def register():
     """ POST /users
     Return:
       - register a user
@@ -67,6 +66,20 @@ def logout():
         if user:
             auth.destroy_session(user.id)
             return redirect("/")
+    abort(403)
+
+
+@app.route('/profile', methods=["GET"])
+def profile():
+    """ GET /profile
+    Return:
+      - log out
+    """
+    session_id = request.cookies.get("session_id")
+    if session_id:
+        user = auth.get_user_from_session_id(session_id)
+        if user:
+            return jsonify({"email": user.email}), 200
     abort(403)
 
 
