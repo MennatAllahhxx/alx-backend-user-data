@@ -45,7 +45,7 @@ def login():
         email = request.form["email"]
         password = request.form["password"]
     except KeyError:
-        abort(400)
+        abort(401)
 
     session_id = auth.create_session(email)
     if not session_id or not auth.valid_login(email, password):
