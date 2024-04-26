@@ -35,9 +35,12 @@ def register_user():
     return jsonify({"email": email, "message": "user created"})
 
 
-@app.route("/sessions", methods=["POST"])
+@app.route('/sessions', methods=['POST'], strict_slashes=False)
 def login():
-    """login"""
+    """ POST /sessions
+    Return:
+      - log in
+    """
     try:
         email = request.form["email"]
         password = request.form["password"]
@@ -47,9 +50,14 @@ def login():
     session_id = auth.create_session(email)
     if not session_id or not auth.valid_login(email, password):
         abort(401)
-    make_response = jsonify({"email": email, "message": "logged in"})
-    make_response.set_cookie("session_id", session_id)
-    return make_response, 200
+    response = make_response(
+        jsonify({
+            "email": email,
+            "message": "logged in"
+            }), 200
+        )
+    response.set_cookie("session_id", session_id)
+    return response
 
 
 if __name__ == "__main__":
