@@ -1,37 +1,34 @@
 #!/usr/bin/env python3
-"""
-Auth Module
-"""
+"""_hash_password method"""
 
+
+import bcrypt
 from db import DB
 from user import User
 from sqlalchemy.orm.exc import NoResultFound
-import bcrypt
-import uuid
+from uuid import uuid4
+from typing import Union
 
 
-def _hash_password(password: str) -> bytes:
+def _hash_password(password: str) -> str:
     """AI is creating summary for _hash_password
 
     Args:
-        password (str): original password
+        password (str): user password
 
     Returns:
-        bytes: hashed password
+        str: password in bytes
     """
-    byte = password.encode('utf-8')
-    salt = bcrypt.gensalt()
-    return bcrypt.hashpw(byte, salt)
+    return bcrypt.hashpw(password.encode(), bcrypt.gensalt())
 
 
 def _generate_uuid() -> str:
-
     """AI is creating summary for _generate_uuid
 
     Returns:
         str: uuid
     """
-    return str(uuid.uuid4())
+    return str(uuid4())
 
 
 class Auth:
@@ -45,15 +42,15 @@ class Auth:
         """AI is creating summary for register_user
 
         Args:
-            email (str): [description]
-            password (str): [description]
+            email (str): user email
+            password (str): user password]
 
         Returns:
-            User: [description]
+            User: registered user
         """
         try:
             user = self._db.find_user_by(email=email)
-            raise ValueError("User {} already exists".format(email))
+            raise ValueError(f"User {email} already exists")
         except NoResultFound:
             password = _hash_password(password)
             return self._db.add_user(email, password)
@@ -91,14 +88,14 @@ class Auth:
         self._db.update_user(user.id, session_id=session_id)
         return session_id
 
-    def get_user_from_session_id(self, session_id: str) -> User:
+    def get_user_from_session_id(self, session_id: str) -> Union[User, None]:
         """AI is creating summary for get_user_from_session_id
 
         Args:
             session_id (str): session id
 
         Returns:
-            User: corresponding user
+            Union[User, None]: user if found
         """
         if session_id is None:
             return None
@@ -127,7 +124,7 @@ class Auth:
             email (str): user email
 
         Returns:
-            str: [description]
+            str: token
         """
         try:
             user = self._db.find_user_by(email=email)
@@ -136,3 +133,20 @@ class Auth:
         token = _generate_uuid()
         self._db.update_user(user.id, reset_token=token)
         return token
+
+    def update_password(self, reset_token: str, password: str) -> None:
+        """AI is creating summary for update_password
+
+        Args:
+            reset_token (str): reset password token
+            password (str): user password
+        """
+        try:
+            user = self._db.find_user_by(reset_token=reset_token)
+        except NoResultFound:
+            raise ValueError
+
+        hashed_password = _hash_password(password)
+        self._db.update_user(user.id, hashed_password=hashed_password,
+                             reset_token=None)
+        return None
